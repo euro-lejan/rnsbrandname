@@ -2,6 +2,52 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../css/products.css';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+import { SearchOutlined } from '@ant-design/icons';
+import { Input, Checkbox, Slider } from 'antd';
+
+
+// const onSearch = (value, _e, info) => console.log(info?.source, value);
+const onChangetext = (checkedValues) => {
+  const {value } = checkedValues.target;
+  console.log('Value-----> : ', value);
+};
+const onChange = (checkedValues) => {
+  console.log('checked-----> :', checkedValues);
+};
+
+
+const Price = {
+  0: {
+    style: {
+      left: '10%',
+    },
+    label: '0',
+  },
+  100000: {
+    style: {
+      left: '85%',
+    },
+    label: '100,000',
+  },
+};
+const Condition = {
+  0: {
+    style: {
+      left: '10%',
+    },
+    label: '0%',
+  },
+  100: {
+    style: {
+      left: '90%',
+    },
+    label: '100%',
+  },
+};
+
 const Product = () => {
   const [products, setProducts] = useState([]);
 
@@ -17,25 +63,139 @@ const Product = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Products</h1>
-      <div className="product-grid">
-        {products.map((product) => (
-          <Link to={`/productDetail/${product.id}`} key={product.id}>
-            <div className="product-box">
-              <img src={product.p_img} alt={product.p_name} />
-              <div className={`product-status ${
-                product.p_status === "0" ? "for-rent" : "for-sell"
-              }`}
-            >
-              {product.p_status === "0" ? "For Rent" : "For Sell"}
-            </div>
-              <div className="product-price">{`${product.p_price} THB`}</div>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
+    <>
+      <Row style={{ height: '100%', textAlign: 'start', margin: 0 }}>
+        <Col md={4} lg={3} xl={3} style={{ background: '#505050', padding: '25px' }} className='filter-side'>
+          <Col>
+            <Input
+              placeholder="Search"
+              suffix={
+                <SearchOutlined style={{color:'#E7C264'}}/>
+              }
+              onChange={onChangetext}
+              onPressEnter={onChangetext}
+            />
+          </Col>
+          <Col>
+            <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
+              <Col cols={6} className='mt-3'>
+                <Checkbox value="A">For Rent</Checkbox>
+              </Col>
+              <Col cols={6} className='mt-3 '>
+                <Checkbox className='ms-2' value="B">For Sell</Checkbox>
+              </Col>
+            </Checkbox.Group>
+          </Col>
+          <Col className='mt-4'>
+            <h5 className='border-text-filter'>Catagory</h5>
+            <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
+              <Row>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="A">All</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="B">Clotges</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="C">Accessories</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="D">Shoes/Sneakers</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="E">Headwear</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="E">Eyewear</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="E">Bag</Checkbox>
+                </Col>
+              </Row>
+            </Checkbox.Group>
+          </Col>
+          <Col className='mt-5'>
+            <h5>Price</h5>
+            <Slider
+              min={0}
+              max={100000}
+              range={{ draggableTrack: true }}
+              defaultValue={[0, 100000]}
+              marks={Price}
+              tooltip={{
+                formatter: (value) => {
+                  return `${value.toLocaleString()} บาท`
+                },
+              }}
+              onChange={onChange}
+            />
+          </Col>
+          <Col className='mt-5'>
+            <h5>Condition</h5>
+            <Slider
+              min={0}
+              max={100}
+              range={{ draggableTrack: true }}
+              defaultValue={[0, 100]}
+              marks={Condition}
+              tooltip={{
+                formatter: (value) => {
+                  return `${value}%`
+                },
+              }}
+              onChange={onChange}
+            />
+          </Col>
+          <Col className='mt-5'>
+            <h5 className='border-text-filter'>Brand</h5>
+            <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
+              <Row>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="A">All</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="B">Balenclaga</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="C">Channel</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="D">Fendi</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="E">Prada</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="C">Dior</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="D">YSL</Checkbox>
+                </Col>
+                <Col lg={6} sm={6} xs={12} className='mt-3'>
+                  <Checkbox value="E">Hermes</Checkbox>
+                </Col>
+              </Row>
+            </Checkbox.Group>
+          </Col>
+        </Col>
+        <Col md={8} lg={9} xl={9} style={{ padding: '30px' }}>
+          <h1>Products</h1>
+          <Row>
+            {products.map((product) => (
+              <Col md={6} lg={4} xl={3} className='mt-4'>
+                <Link to={`/productDetail/${product.id}`} key={product.id}>
+                  <div className="product-box">
+                    <img src={product.p_img} alt={product.p_name} />
+
+                    <div className="product-status">{product.p_status === 0 ? 'For Rent' : 'For Sell'}</div>
+                    <div className="product-price">{`${product.p_price} THB`}</div>
+                  </div>
+                </Link>
+              </Col>
+            ))}
+          </Row></Col>
+      </Row>
+    </>
   );
 };
 
